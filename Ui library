@@ -25,6 +25,17 @@ function Gghiza07UI:CreateWindow(config)
     corner.CornerRadius = UDim.new(0, 10)
     corner.Parent = mainContent
 
+    -- เพิ่มชื่อค่ายที่มุมซ้ายบน
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(0, 200, 0, 30)
+    titleLabel.Position = UDim2.new(0, 10, 0, 10)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = config.Name or "Gghiza07UI"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.TextScaled = true
+    titleLabel.Parent = mainContent
+
     -- เพิ่มการลาก UI
     local draggingUI = false
     local dragInput
@@ -60,7 +71,7 @@ function Gghiza07UI:CreateWindow(config)
     -- Tabs Frame
     local tabsFrame = Instance.new("Frame")
     tabsFrame.Size = UDim2.new(1, -20, 0, 60)
-    tabsFrame.Position = UDim2.new(0, 10, 0, 10)
+    tabsFrame.Position = UDim2.new(0, 10, 0, 50) -- ปรับตำแหน่งให้อยู่ใต้ชื่อค่าย
     tabsFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
     tabsFrame.Parent = mainContent
 
@@ -162,8 +173,8 @@ function Gghiza07UI:CreateWindow(config)
         corner.Parent = tabButton
 
         local tabContent = Instance.new("ScrollingFrame")
-        tabContent.Size = UDim2.new(1, -20, 1, -80)
-        tabContent.Position = UDim2.new(0, 10, 0, 70)
+        tabContent.Size = UDim2.new(1, -20, 1, -110) -- ปรับขนาดให้อยู่ใต้ tabsFrame
+        tabContent.Position = UDim2.new(0, 10, 0, 110) -- เริ่มจากด้านล่างของ tabsFrame
         tabContent.BackgroundTransparency = 1
         tabContent.CanvasSize = UDim2.new(0, 0, 2, 0)
         tabContent.ScrollBarThickness = 5
@@ -208,12 +219,15 @@ function Gghiza07UI:CreateWindow(config)
             switchTab()
         end
 
+        -- ตัวนับตำแหน่งสำหรับ Toggle และ Button
+        local yOffset = 0
+
         -- ฟังก์ชันสร้าง Toggle
         function tab:CreateToggle(toggleConfig)
             local toggle = {}
             local toggleFrame = Instance.new("Frame")
             toggleFrame.Size = UDim2.new(1, 0, 0, 50)
-            toggleFrame.Position = UDim2.new(0, 0, 0, (#tabContent:GetChildren() - 1) * 60)
+            toggleFrame.Position = UDim2.new(0, 0, 0, yOffset) -- ใช้ yOffset เพื่อจัดเรียง
             toggleFrame.BackgroundTransparency = 1
             toggleFrame.Parent = tabContent
 
@@ -264,6 +278,9 @@ function Gghiza07UI:CreateWindow(config)
             toggleButton.MouseButton1Click:Connect(toggle)
             toggleButton.TouchTap:Connect(toggle)
 
+            yOffset = yOffset + 60 -- เพิ่ม yOffset สำหรับส่วนประกอบถัดไป
+            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset) -- ปรับ CanvasSize
+
             return toggle
         end
 
@@ -271,7 +288,7 @@ function Gghiza07UI:CreateWindow(config)
         function tab:CreateButton(buttonConfig)
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(0, 140, 0, 50)
-            button.Position = UDim2.new(0, 10, 0, (#tabContent:GetChildren() - 1) * 60)
+            button.Position = UDim2.new(0, 10, 0, yOffset) -- ใช้ yOffset เพื่อจัดเรียง
             button.BackgroundColor3 = Color3.fromRGB(0, 123, 255)
             button.Text = buttonConfig.Name or "Button"
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -297,6 +314,9 @@ function Gghiza07UI:CreateWindow(config)
 
             button.MouseButton1Click:Connect(activate)
             button.TouchTap:Connect(activate)
+
+            yOffset = yOffset + 60 -- เพิ่ม yOffset สำหรับส่วนประกอบถัดไป
+            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset) -- ปรับ CanvasSize
         end
 
         return tab
