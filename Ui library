@@ -71,7 +71,7 @@ function Gghiza07UI:CreateWindow(config)
     -- Tabs Frame
     local tabsFrame = Instance.new("Frame")
     tabsFrame.Size = UDim2.new(1, -20, 0, 60)
-    tabsFrame.Position = UDim2.new(0, 10, 0, 50) -- ปรับตำแหน่งให้อยู่ใต้ชื่อค่าย
+    tabsFrame.Position = UDim2.new(0, 10, 0, 50)
     tabsFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
     tabsFrame.Parent = mainContent
 
@@ -151,7 +151,7 @@ function Gghiza07UI:CreateWindow(config)
             toggleUI()
             lastToggleTime = currentTime
         end
-    end
+    end)
 
     toggleButton.MouseButton1Click:Connect(onToggleActivated)
     toggleButton.TouchTap:Connect(onToggleActivated)
@@ -173,8 +173,8 @@ function Gghiza07UI:CreateWindow(config)
         corner.Parent = tabButton
 
         local tabContent = Instance.new("ScrollingFrame")
-        tabContent.Size = UDim2.new(1, -20, 1, -110) -- ปรับขนาดให้อยู่ใต้ tabsFrame
-        tabContent.Position = UDim2.new(0, 10, 0, 110) -- เริ่มจากด้านล่างของ tabsFrame
+        tabContent.Size = UDim2.new(1, -20, 1, -110)
+        tabContent.Position = UDim2.new(0, 10, 0, 110)
         tabContent.BackgroundTransparency = 1
         tabContent.CanvasSize = UDim2.new(0, 0, 2, 0)
         tabContent.ScrollBarThickness = 5
@@ -227,7 +227,7 @@ function Gghiza07UI:CreateWindow(config)
             local toggle = {}
             local toggleFrame = Instance.new("Frame")
             toggleFrame.Size = UDim2.new(1, 0, 0, 50)
-            toggleFrame.Position = UDim2.new(0, 0, 0, yOffset) -- ใช้ yOffset เพื่อจัดเรียง
+            toggleFrame.Position = UDim2.new(0, 0, 0, yOffset)
             toggleFrame.BackgroundTransparency = 1
             toggleFrame.Parent = tabContent
 
@@ -262,13 +262,16 @@ function Gghiza07UI:CreateWindow(config)
             local isToggled = false
             local function toggle()
                 isToggled = not isToggled
+                print("Toggle state changed to: " .. tostring(isToggled)) -- เพิ่มการดีบัก
                 local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
                 if isToggled then
-                    toggleButton.BackgroundColor3 = Color3.fromRGB(76, 175, 80)
                     TweenService:Create(toggleCircle, tweenInfo, {Position = UDim2.new(0.5, 2, 0, 2)}):Play()
+                    toggleButton.BackgroundColor3 = Color3.fromRGB(76, 175, 80) -- สีเขียวเมื่อเปิด
+                    print("Set Toggle color to green")
                 else
-                    toggleButton.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
                     TweenService:Create(toggleCircle, tweenInfo, {Position = UDim2.new(0, 2, 0, 2)}):Play()
+                    toggleButton.BackgroundColor3 = Color3.fromRGB(200, 200, 200) -- สีขาวเมื่อปิด
+                    print("Set Toggle color to white")
                 end
                 if toggleConfig.Callfunction then
                     toggleConfig.Callfunction(isToggled)
@@ -278,8 +281,8 @@ function Gghiza07UI:CreateWindow(config)
             toggleButton.MouseButton1Click:Connect(toggle)
             toggleButton.TouchTap:Connect(toggle)
 
-            yOffset = yOffset + 60 -- เพิ่ม yOffset สำหรับส่วนประกอบถัดไป
-            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset) -- ปรับ CanvasSize
+            yOffset = yOffset + 60
+            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset)
 
             return toggle
         end
@@ -288,7 +291,7 @@ function Gghiza07UI:CreateWindow(config)
         function tab:CreateButton(buttonConfig)
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(0, 140, 0, 50)
-            button.Position = UDim2.new(0, 10, 0, yOffset) -- ใช้ yOffset เพื่อจัดเรียง
+            button.Position = UDim2.new(0, 10, 0, yOffset)
             button.BackgroundColor3 = Color3.fromRGB(0, 123, 255)
             button.Text = buttonConfig.Name or "Button"
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -315,8 +318,8 @@ function Gghiza07UI:CreateWindow(config)
             button.MouseButton1Click:Connect(activate)
             button.TouchTap:Connect(activate)
 
-            yOffset = yOffset + 60 -- เพิ่ม yOffset สำหรับส่วนประกอบถัดไป
-            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset) -- ปรับ CanvasSize
+            yOffset = yOffset + 60
+            tabContent.CanvasSize = UDim2.new(0, 0, 0, yOffset)
         end
 
         return tab
